@@ -1,0 +1,37 @@
+#INSTALL SPLUNK
+
+#Create Group "splunk"
+sudo groupadd -g splunk
+
+#Create User "Splunk"
+sudo useradd splunk
+
+#Add "splunk" user to "splunk" group
+sudo useradd -g splunk splunk
+
+#Extract Splunk .tgz file into opt directory
+tar -xvzf splunk_package_name.tgz -C /opt
+
+#Change directory to splunk/bin
+cd /opt/splunk/bin
+
+#Start Splunk with accept license parameter
+./splunk start --accept-license
+
+#Chage the owner of Splunk files to splunk user and splunk group
+chown -R splunk:splunk /opt/splunk
+
+#Configure Splunk to run as non-splunk user
+./splunk enable boot-start -user splunk
+
+#Restart Splunk
+./splunk restart
+
+
+#TROUBLESHOOTING
+#If you get the unable to kill process when restarting Splunk, use the following commands
+ps -aux | grep splunk
+
+#Then use the PID number value from the previous command to kill the process
+kill -9 [PID]
+e.g. kill -9 4607
